@@ -3,12 +3,28 @@ package com.userfront.domain;
 import java.math.BigDecimal;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.GenerationType;
+
+@Entity
 public class PrimaryAccount {
 	
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 	private int accountNumber;
 	private BigDecimal accountBalance;
 	
+	@OneToMany(mappedBy = "primaryAccount", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JsonIgnore
 	private List<PrimaryTransaction> primaryTransactionList;
 
 	public Long getId() {
@@ -41,6 +57,12 @@ public class PrimaryAccount {
 
 	public void setPrimaryTransactionList(List<PrimaryTransaction> primaryTransactionList) {
 		this.primaryTransactionList = primaryTransactionList;
+	}
+
+	@Override
+	public String toString() {
+		return "PrimaryAccount [id=" + id + ", accountNumber=" + accountNumber + ", accountBalance=" + accountBalance
+				+ ", primaryTransactionList=" + primaryTransactionList + "]";
 	}
 	
 	
